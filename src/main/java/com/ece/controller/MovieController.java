@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class MovieController {
@@ -31,6 +31,18 @@ public class MovieController {
         try {
             movieRepository.save(movie);
             return new ResponseEntity(movie, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @GetMapping("/movie/{id}")
+    public ResponseEntity<List<Movie>> getById(@PathVariable("id") Long id ) {
+        try {
+            Optional<Movie> movies = movieRepository.findById(id);
+            return new ResponseEntity(movies.get(), HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

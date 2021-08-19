@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     @Column(name="Title")
     private String title;
     @Column(name="Year")
@@ -20,7 +20,10 @@ public class Movie {
     @Column(name="Poster")
     private String poster;
 
-    public Movie(int id, String title, String year, String imdbId, String type, String poster) {
+    public Movie() {
+    }
+
+    public Movie(Long id, String title, String year, String imdbId, String type, String poster) {
         this.id = id;
         this.title = title;
         this.year = year;
@@ -29,11 +32,11 @@ public class Movie {
         this.poster = poster;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
