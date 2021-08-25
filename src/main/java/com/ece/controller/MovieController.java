@@ -3,7 +3,7 @@ package com.ece.controller;
 
 import com.ece.model.dto.Movie;
 import com.ece.repository.MovieRepository;
-import com.ece.service.OmdApiService;
+import com.ece.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +15,21 @@ import java.util.Optional;
 @RestController
 public class MovieController {
 
-    @Autowired
-    private OmdApiService omdApiService;
 
     @Autowired
     MovieRepository movieRepository;
 
+    @Autowired
+    MovieService movieService;
+
     @GetMapping ("/search")
-    public ResponseEntity search(@RequestParam("search") String search) {
-        return ResponseEntity.ok(omdApiService.search(search));
+    public ResponseEntity search(@RequestParam("term") String term) {
+        return ResponseEntity.ok(movieService.search(term));
+    }
+
+    @GetMapping ("/all")
+    public ResponseEntity findAll() {
+        return ResponseEntity.ok(movieRepository.findAll());
     }
 
     @PostMapping("/movie")
@@ -49,4 +55,5 @@ public class MovieController {
         }
 
     }
+
 }

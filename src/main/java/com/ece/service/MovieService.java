@@ -1,8 +1,13 @@
 package com.ece.service;
 
+import com.ece.model.dto.Movie;
+import com.ece.model.dto.SearchResponse;
 import com.ece.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MovieService {
@@ -10,4 +15,23 @@ public class MovieService {
     @Autowired
     MovieRepository movieRepository;
 
+    @Autowired
+    OmdApiService omdApiService;
+
+    public List<Movie> search(String term) {
+        SearchResponse searchResponse = omdApiService.search(term);
+        List<Movie> movies = new ArrayList<>();
+        if (searchResponse.isResponse()) {
+            searchResponse.getSearch().forEach(movieResponse -> {
+                Movie movie = new Movie(null, movieResponse.getTitle(), movieResponse.getYear(), movieResponse.getImdbId(), movieResponse.getType(), movieResponse.getPoster());
+                save(movie);
+                movies.add(movie);
+            });
+        }
+        return movies;
+    }
+
+    public Movie save(Movie movie) {
+        return movieRepository.save(movie);
+    }
 }

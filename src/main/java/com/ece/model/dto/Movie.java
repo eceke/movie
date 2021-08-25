@@ -1,5 +1,7 @@
 package com.ece.model.dto;
 
+import com.ece.repository.MovieRepository;
+
 import javax.persistence.*;
 
 
